@@ -1,20 +1,25 @@
 <script setup lang="ts">
-import { projects } from '~/data/projects'
+import { computed } from 'vue'
+import { useI18n } from '~/composables/useI18n'
+import { translations } from '~/data/translations'
+
+const { locale } = useI18n()
+const t = computed(() => translations[locale.value].projects)
 </script>
 
 <template>
-  <section id="projects" class="py-32 bg-black">
+  <section id="projects" class="py-32 bg-black border-t border-gray-900">
     <UContainer>
       <p class="text-sm tracking-widest uppercase text-gray-500 mb-4">
-        Selected Work
+        {{ t.tag }}
       </p>
       <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-16 text-white">
-        Projects
+        {{ t.title }}
       </h2>
 
       <div class="space-y-16">
         <article
-          v-for="(project, index) in projects"
+          v-for="(project, index) in t.items"
           :key="project.title"
           class="group"
         >
@@ -29,7 +34,7 @@ import { projects } from '~/data/projects'
             </div>
 
             <div class="flex items-center gap-6">
-              <div class="flex gap-2">
+              <div class="flex flex-wrap gap-2">
                 <span
                   v-for="tech in project.tech"
                   :key="tech"
@@ -46,14 +51,15 @@ import { projects } from '~/data/projects'
                   target="_blank"
                   class="text-sm text-white underline underline-offset-4 hover:text-gray-400 transition-colors"
                 >
-                  Live
+                  {{ t.live }}
                 </a>
                 <a
+                  v-if="project.github"
                   :href="project.github"
                   target="_blank"
                   class="text-sm text-white underline underline-offset-4 hover:text-gray-400 transition-colors"
                 >
-                  Code
+                  {{ t.code }}
                 </a>
               </div>
             </div>

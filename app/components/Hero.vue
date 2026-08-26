@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useI18n } from '~/composables/useI18n'
+import { translations } from '~/data/translations'
+
+const { locale } = useI18n()
+const t = computed(() => translations[locale.value].hero)
 
 const show = ref(false)
 const showTagline = ref(false)
@@ -30,7 +35,7 @@ onMounted(() => {
     <UContainer class="hero-content">
       <Transition name="fade-up">
         <p v-if="show" class="hero-label">
-          Frontend Developer
+          {{ t.role }}
         </p>
       </Transition>
 
@@ -42,14 +47,17 @@ onMounted(() => {
 
       <Transition name="fade-up">
         <p v-if="showTagline" class="hero-tagline">
-          Building clean, accessible interfaces with solid web fundamentals.
+          {{ t.tagline }}
         </p>
       </Transition>
 
       <Transition name="fade-up">
-        <div v-if="showButtons" class="flex justify-center gap-4">
+        <div v-if="showButtons" class="flex flex-wrap justify-center gap-4">
           <UButton to="#projects" variant="solid" color="white" size="lg">
-            View Work
+            {{ t.viewWork }}
+          </UButton>
+          <UButton to="#experience" variant="outline" color="white" size="lg">
+            {{ t.experience }}
           </UButton>
           <UButton
             to="https://github.com/frankizaw"
@@ -58,7 +66,7 @@ onMounted(() => {
             color="white"
             size="lg"
           >
-            GitHub
+            {{ t.github }}
           </UButton>
         </div>
       </Transition>
@@ -111,7 +119,7 @@ onMounted(() => {
 .hero-tagline {
   font-size: 1.125rem;
   color: rgba(255,255,255,0.7);
-  max-width: 28rem;
+  max-width: 32rem;
   margin: 0 auto 2.5rem;
   text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
